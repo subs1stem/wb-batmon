@@ -4,11 +4,11 @@ from paho.mqtt.publish import multiple
 
 def publish_meta(name: str, error: str):
     msgs = [
-        {'topic': f'{ROOT_MQTT_TOPIC}/meta/name',
+        {'topic': '{}/meta/name'.format(ROOT_MQTT_TOPIC),
          'payload': name,
          'retain': True},
 
-        {'topic': f'{ROOT_MQTT_TOPIC}/meta/error',
+        {'topic': '{}/meta/error'.format(ROOT_MQTT_TOPIC),
          'payload': error,
          'retain': True},
     ]
@@ -23,19 +23,19 @@ def publish_control(data,
                     error: str,
                     retain=False):
     msgs = [
-        {'topic': f'{ROOT_MQTT_TOPIC}/controls/{name}',
+        {'topic': '{}/controls/{}'.format(ROOT_MQTT_TOPIC, name),
          'payload': data,
          'retain': retain},
 
-        {'topic': f'{ROOT_MQTT_TOPIC}/controls/{name}/meta/type',
+        {'topic': '{}/controls/{}/meta/type'.format(ROOT_MQTT_TOPIC, name),
          'payload': data_type,
          'retain': retain},
 
-        {'topic': f'{ROOT_MQTT_TOPIC}/controls/{name}/meta/order',
+        {'topic': '{}/controls/{}/meta/order'.format(ROOT_MQTT_TOPIC, name),
          'payload': order,
          'retain': retain},
 
-        {'topic': f'{ROOT_MQTT_TOPIC}/controls/{name}/meta/error',
+        {'topic': '{}/controls/{}/meta/error'.format(ROOT_MQTT_TOPIC, name),
          'payload': error,
          'retain': retain},
     ]

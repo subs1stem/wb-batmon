@@ -57,17 +57,17 @@ while True:
                         temp_error = 'r'
 
                 publish_control(data=status,
-                                name=f'SL{key} status',
+                                name='SL{} status'.format(key),
                                 data_type='text',
                                 order=4,
                                 error=status_error)
                 publish_control(data=voltage,
-                                name=f'SL{key} voltage',
+                                name='SL{} voltage'.format(key),
                                 data_type='voltage',
                                 order=6,
                                 error=voltage_error)
                 publish_control(data=temperature,
-                                name=f'SL{key} temperature',
+                                name='SL{} temperature'.format(key),
                                 data_type='temperature',
                                 order=8,
                                 error=temp_error)
@@ -78,7 +78,7 @@ while True:
 
             # publish average voltage
             publish_control(data=average_voltage,
-                            name=f'AVG voltage',
+                            name='AVG voltage',
                             data_type='voltage',
                             order=5,
                             error='' if average_voltage else 'r')
@@ -87,7 +87,7 @@ while True:
             for slave in range(0, slaves):
                 deviation = round(abs(voltages[slave] - average_voltage), 2) if average_voltage else 0
                 publish_control(data=deviation,
-                                name=f'SL{slave+1} voltage deviation',
+                                name='SL{} voltage deviation'.format(slave+1),
                                 data_type='voltage',
                                 order=7,
                                 error='' if average_voltage else 'r')

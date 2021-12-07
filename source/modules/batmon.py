@@ -48,18 +48,18 @@ class BatMon:
         all_data['master_info'] = master_info
         slaves_number = master_info['slaves']
         for battery in range(1, slaves_number + 1):
-            battery_info = await self.__request_info(f'/getSlaveInfo={battery}')
+            battery_info = await self.__request_info('/getSlaveInfo={}'.format(battery))
             all_data[battery] = battery_info
         return all_data
 
     async def set_location(self, location):
-        return await self.__request_info(f'/config?location={location}')
+        return await self.__request_info('/config?location={}'.format(location))
 
     async def set_slaves_number(self, slaves_number):
-        return await self.__request_info(f'/config?slaves={slaves_number}')
+        return await self.__request_info('/config?slaves={}'.format(slaves_number))
 
     async def set_slave_address(self, slave_address):
-        return await self.__request_info(f'/?set={slave_address}')
+        return await self.__request_info('/?set={}'.format(slave_address))
 
     async def factory_reset(self, save_mac=True):
         request = '/config?factory=Factory+reset'
