@@ -1,0 +1,13 @@
+[Unit]
+Description=BatMon module for Wiren Board
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/wb-batmon
+ExecStart=/opt/wb-batmon/venv/bin/python3 main.py
+Restart=always
+TimeoutSec=120
+
+[Install]
+WantedBy=multi-user.target
