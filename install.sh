@@ -5,7 +5,7 @@ cp -u -r service/wb-batmon.service /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable wb-batmon.service
 
-cp -u -r source /opt/wb-batmon && cd /opt/wb-batmon/ || exit
+cp -u -r source /mnt/data/etc && cd /mnt/data/etc || exit
 
 echo 'Installing venv...'
 python3 -m venv venv
