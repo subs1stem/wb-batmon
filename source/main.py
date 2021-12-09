@@ -9,11 +9,12 @@ from modules.publisher import *
 from settings import *
 
 batmon = BatMon(BATMON_IP)
-publish_meta(name='BatMon', error='')
+publish_meta(name=MQTT_CLIENT_NAME, error='')
 
 while True:
     try:
-        slaves_data = asyncio.run(batmon.get_all_data())
+        loop = asyncio.get_event_loop()
+        slaves_data = loop.run_until_complete(batmon.get_all_data())
         master_data = slaves_data.pop('master_info')
 
         #  publish master info

@@ -1,4 +1,4 @@
-from asyncio.exceptions import TimeoutError
+from asyncio import TimeoutError
 from ipaddress import ip_address
 
 import aiohttp.client_exceptions
