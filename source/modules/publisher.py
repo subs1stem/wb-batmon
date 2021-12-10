@@ -21,7 +21,7 @@ def publish_control(data,
                     data_type: str,
                     order: int,
                     error: str,
-                    retain=False):
+                    retain=True):
     msgs = [
         {'topic': '{}/controls/{}'.format(ROOT_MQTT_TOPIC, name),
          'payload': data,
