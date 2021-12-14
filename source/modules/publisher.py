@@ -19,8 +19,8 @@ def publish_meta(name: str, error: str):
 def publish_control(data,
                     name: str,
                     data_type: str,
-                    order: int,
                     error: str,
+                    order=None,
                     retain=True):
     msgs = [
         {'topic': '{}/controls/{}'.format(ROOT_MQTT_TOPIC, name),

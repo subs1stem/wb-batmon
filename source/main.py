@@ -24,26 +24,26 @@ while True:
         publish_control(data=ip,
                         name='IP',
                         data_type='text',
-                        order=1,
+                        # order=1,
                         error='')
         publish_control(data=location,
                         name='Location',
                         data_type='text',
-                        order=2,
+                        # order=2,
                         error='')
         publish_control(data=slaves,
                         name='Slaves',
                         data_type='value',
-                        order=3,
+                        # order=3,
                         error='')
 
         if slaves:
             voltages = []
             #  publish slaves info
-            for key in slaves_data:
-                status = slaves_data[key]['status']
-                voltage = slaves_data[key]['voltage']
-                temperature = slaves_data[key]['temperature']
+            for slave in range(1, slaves+1):
+                status = slaves_data[slave]['status']
+                voltage = slaves_data[slave]['voltage']
+                temperature = slaves_data[slave]['temperature']
 
                 if voltage != 0:
                     voltages.append(voltage)
@@ -58,19 +58,19 @@ while True:
                         temp_error = 'r'
 
                 publish_control(data=status,
-                                name='SL{} status'.format(key),
+                                name='SL{} status'.format(slave),
                                 data_type='text',
-                                order=4,
+                                # order=4,
                                 error=status_error)
                 publish_control(data=voltage,
-                                name='SL{} voltage'.format(key),
+                                name='SL{} voltage'.format(slave),
                                 data_type='voltage',
-                                order=6,
+                                # order=6,
                                 error=voltage_error)
                 publish_control(data=temperature,
-                                name='SL{} temperature'.format(key),
+                                name='SL{} temperature'.format(slave),
                                 data_type='temperature',
-                                order=8,
+                                # order=8,
                                 error=temp_error)
 
             average_voltage = 0
@@ -81,7 +81,7 @@ while True:
             publish_control(data=average_voltage,
                             name='AVG voltage',
                             data_type='voltage',
-                            order=5,
+                            # order=5,
                             error='' if average_voltage else 'r')
 
             # publish voltage deviation
@@ -90,14 +90,14 @@ while True:
                 publish_control(data=deviation,
                                 name='SL{} voltage deviation'.format(slave+1),
                                 data_type='voltage',
-                                order=7,
+                                # order=7,
                                 error='' if average_voltage else 'r')
 
     except RequestException:
         publish_control(data=BATMON_IP,
                         name='IP',
                         data_type='text',
-                        order=1,
+                        # order=1,
                         error='r')
 
     finally:
