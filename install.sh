@@ -1,5 +1,5 @@
 #!/bin/bash
-apt install python3-dev
+apt install python3-dev python3-venv
 
 echo 'Creating service...'
 cp -u -r service/wb-batmon.service /etc/systemd/system/
