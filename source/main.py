@@ -58,17 +58,17 @@ while True:
                         temp_error = 'r'
 
                 publish_control(data=status,
-                                name='SL{} status'.format(slave),
+                                name='SL{}_status'.format(slave),
                                 data_type='text',
                                 # order=4,
                                 error=status_error)
                 publish_control(data=voltage,
-                                name='SL{} voltage'.format(slave),
+                                name='SL{}_voltage'.format(slave),
                                 data_type='voltage',
                                 # order=6,
                                 error=voltage_error)
                 publish_control(data=temperature,
-                                name='SL{} temperature'.format(slave),
+                                name='SL{}_temperature'.format(slave),
                                 data_type='temperature',
                                 # order=8,
                                 error=temp_error)
@@ -79,7 +79,7 @@ while True:
 
             # publish average voltage
             publish_control(data=average_voltage,
-                            name='AVG voltage',
+                            name='AVG_voltage',
                             data_type='voltage',
                             # order=5,
                             error='' if average_voltage else 'r')
