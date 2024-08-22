@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from requests.exceptions import RequestException
 
 from modules.batmon.batmon import BatMon
-from wb_batmon.modules.mqtt.mqtt import MQTTClient
+from modules.mqtt.mqtt import MQTTClient
 
 load_dotenv()
 

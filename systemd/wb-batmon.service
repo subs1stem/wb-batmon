@@ -5,7 +5,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/opt/wb-batmon
-ExecStart=/opt/wb-batmon/venv/bin/python3 main.py
+ExecStart=/opt/wb-batmon/venv/bin/python3 /opt/wb-batmon/wb_batmon/main.py
 Restart=always
 TimeoutSec=120
 

@@ -14,20 +14,20 @@ git clone https://github.com/subs1stem/wb-batmon.git /opt/wb-batmon
 
 ```bash
 # Make the install.sh script executable
-sudo chmod +x /opt/wb-batmon/install.sh
+chmod +x /opt/wb-batmon/install.sh
 
 # Run the installation script
-sudo /opt/wb-batmon/install.sh
+/opt/wb-batmon/install.sh
 ```
 
 * **Step 3:** Configure the .env file:
 
 ```bash
-sudo nano /opt/wb-batmon/.env
+nano /opt/wb-batmon/.env
 ```
 
 * **Step 4:** Start service:
 
 ```bash
-sudo systemctl start wb-batmon.service
+systemctl start wb-batmon.service
 ```
