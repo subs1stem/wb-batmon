@@ -1,22 +1,26 @@
 #!/bin/bash
-echo 'Installing Python...'
-apt install python3-dev python3-venv
 
-echo 'Creating service...'
-cp -u -r service/wb-batmon.service /etc/systemd/system/
-systemctl daemon-reload
-systemctl enable wb-batmon.service
+echo 'Installing Python and necessary packages...'
+sudo apt update
+sudo apt install -y python3-dev python3-venv python3-pip
 
-cp -u -r source /mnt/data/etc/wb-batmon && cd /mnt/data/etc/wb-batmon || exit
+echo 'Creating systemd service symlink...'
+sudo ln -s /opt/wb-batmon/systemd/wb-batmon.service /etc/systemd/system/wb-batmon.service
+sudo systemctl daemon-reload
+sudo systemctl enable wb-batmon.service
 
-echo 'Installing venv...'
-python3 -m venv venv
-source venv/bin/activate
+echo 'Setting up virtual environment...'
+python3 -m venv /opt/wb-batmon/venv
+source /opt/wb-batmon/venv/bin/activate
 
-echo 'Installing requirements...'
-pip install -r requirements.txt
+echo 'Installing Python dependencies...'
+pip install -r /opt/wb-batmon/requirements.txt
 deactivate
 
-echo '--------------------------------------------------------------------'
-echo 'Done. Edit the settings.py file at the path /mnt/data/etc/wb-batmon.'
-echo 'Use "systemctl start wb-batmon.service" for running module.'
+echo 'Copying .env.example to .env...'
+sudo cp /opt/wb-batmon/.env.example /opt/wb-batmon/.env
+
+echo '---------------------------------------------------------------------------'
+echo 'Installation complete!'
+echo 'Please configure the .env file located at: /opt/wb-batmon/.env'
+echo 'To start the wb-batmon service, use: sudo systemctl start wb-batmon.service'
