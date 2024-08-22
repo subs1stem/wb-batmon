@@ -1,44 +1,42 @@
-from os import getenv
-
-from paho.mqtt.publish import multiple
+import paho.mqtt.client as mqtt
 
 
-def publish_meta(name: str, error: str):
-    msgs = [
-        {'topic': '{}/meta/name'.format(getenv('MQTT_ROOT_TOPIC')),
-         'payload': name,
-         'retain': True},
+class MQTTClient:
+    def __init__(self, host: str, root_topic: str):
+        self.client = mqtt.Client()
+        self.host = host
+        self.root_topic = root_topic
+        self.client.connect(self.host)
 
-        {'topic': '{}/meta/error'.format(getenv('MQTT_ROOT_TOPIC')),
-         'payload': error,
-         'retain': True},
-    ]
+    def __del__(self):
+        self.disconnect()
 
-    multiple(msgs, hostname=getenv('MQTT_BROKER_ADDRESS'))
+    def publish_meta(self, name: str, error: str = '') -> None:
+        self.publish_multiple([
+            (f'{self.root_topic}/meta/name', name, 1, True),
+            (f'{self.root_topic}/meta/error', error, 1, True),
+        ])
 
+    def publish_control(
+            self,
+            data,
+            name: str,
+            data_type: str,
+            error: str = '',
+            order: int = None,
+            retain: bool = True,
+    ) -> None:
+        control_topic = f'{self.root_topic}/controls/{name}'
+        self.publish_multiple([
+            (control_topic, data, 0, retain),
+            (f'{control_topic}/meta/type', data_type, 0, retain),
+            (f'{control_topic}/meta/order', order, 0, retain),
+            (f'{control_topic}/meta/error', error, 0, retain),
+        ])
 
-def publish_control(data,
-                    name: str,
-                    data_type: str,
-                    error: str,
-                    order=None,
-                    retain=True):
-    msgs = [
-        {'topic': '{}/controls/{}'.format(getenv('MQTT_ROOT_TOPIC'), name),
-         'payload': data,
-         'retain': retain},
+    def publish_multiple(self, msgs) -> None:
+        for topic, payload, qos, retain in msgs:
+            self.client.publish(topic, payload, qos, retain)
 
-        {'topic': '{}/controls/{}/meta/type'.format(getenv('MQTT_ROOT_TOPIC'), name),
-         'payload': data_type,
-         'retain': retain},
-
-        {'topic': '{}/controls/{}/meta/order'.format(getenv('MQTT_ROOT_TOPIC'), name),
-         'payload': order,
-         'retain': retain},
-
-        {'topic': '{}/controls/{}/meta/error'.format(getenv('MQTT_ROOT_TOPIC'), name),
-         'payload': error,
-         'retain': retain},
-    ]
-
-    multiple(msgs, hostname=getenv('MQTT_BROKER_ADDRESS'))
+    def disconnect(self) -> None:
+        self.client.disconnect()
