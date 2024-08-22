@@ -1,9 +1,8 @@
 from asyncio import TimeoutError
 from ipaddress import ip_address
 
-import aiohttp.client_exceptions
 from aiohttp import ClientSession
-from aiohttp.client_exceptions import ContentTypeError
+from aiohttp.client_exceptions import ContentTypeError, ClientConnectorError
 from requests.exceptions import RequestException
 
 
@@ -27,7 +26,7 @@ class BatMon:
                         return res.status
             except (TimeoutError,
                     ContentTypeError,
-                    aiohttp.client_exceptions.ClientConnectorError):
+                    ClientConnectorError):
                 if ignore_timeout:
                     await session.close()
                 else:

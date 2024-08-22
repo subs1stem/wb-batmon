@@ -2,14 +2,16 @@ import asyncio
 import time
 from statistics import mean
 
+from dotenv import load_dotenv
 from requests.exceptions import RequestException
 
-from modules.batmon import BatMon
-from modules.publisher import *
-from settings import *
+from modules.batmon.batmon import BatMon
+from modules.mqtt.mqtt import *
 
-batmon = BatMon(BATMON_IP)
-publish_meta(name=MQTT_CLIENT_NAME, error='')
+load_dotenv()
+
+batmon = BatMon(getenv('BATMON_ADDRESS'))
+publish_meta(name=getenv('MQTT_DEVICE_NAME'), error='')
 
 while True:
     try:
@@ -17,7 +19,7 @@ while True:
         slaves_data = loop.run_until_complete(batmon.get_all_data())
         master_data = slaves_data.pop('master_info')
 
-        #  publish master info
+        # publish master info
         ip = master_data['ip_address']
         location = master_data['location']
         slaves = master_data['slaves']
@@ -39,8 +41,8 @@ while True:
 
         if slaves:
             voltages = []
-            #  publish slaves info
-            for slave in range(1, slaves+1):
+            # publish slaves info
+            for slave in range(1, slaves + 1):
                 status = slaves_data[slave]['status']
                 voltage = slaves_data[slave]['voltage']
                 temperature = slaves_data[slave]['temperature']
@@ -88,17 +90,17 @@ while True:
             for slave in range(0, slaves):
                 deviation = round(abs(voltages[slave] - average_voltage), 2) if average_voltage else 0
                 publish_control(data=deviation,
-                                name='SL{} voltage deviation'.format(slave+1),
+                                name='SL{} voltage deviation'.format(slave + 1),
                                 data_type='voltage',
                                 # order=7,
                                 error='' if average_voltage else 'r')
 
     except RequestException:
-        publish_control(data=BATMON_IP,
+        publish_control(data=getenv('BATMON_ADDRESS'),
                         name='IP',
                         data_type='text',
                         # order=1,
                         error='r')
 
     finally:
-        time.sleep(POLLING_INTERVAL)
+        time.sleep(int(getenv('POLLING_INTERVAL')))
